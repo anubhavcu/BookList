@@ -22,12 +22,33 @@ UI.prototype.addBookToList = function(book) {
     list.appendChild(row); // appending the td to tr and then to tbody
 }
 
+//show alert  
+UI.prototype.showAlert = function(message, className) {
+    //create div , construct element
+    const div = document.createElement('div');
+    div.className = `alert ${className}`;
+
+    //add text
+    div.appendChild(document.createTextNode(message));
+    //get parent 
+    const container = document.querySelector('.container');
+    const form = document.querySelector('#book-form');
+    //insert alert
+    container.insertBefore(div, form);
+
+    //timeout after 3 seconds
+    setTimeout(function() {
+        document.querySelector('.alert').remove();
+    }, 3000)
+}
+
 //clear fields
 UI.prototype.clearFields = function() {
     document.getElementById('title').value = '';
     document.getElementById('author').value = '';
     document.getElementById('isbn').value = '';
 }
+
 
 //event listeners 
 document.getElementById('book-form').addEventListener('submit', function(e) {
@@ -42,14 +63,18 @@ document.getElementById('book-form').addEventListener('submit', function(e) {
     //instantiate ui  object  
     const ui = new UI();
 
-    //add  book to list 
-    ui.addBookToList(book);
+    //validate (whether the input fields are not empty)
+    if (title === '' || author === '' || isbn === '') {
+        //error alert
+        ui.showAlert('Please fill in all fields', 'error');
+    } else {
+        //add  book to list 
+        ui.addBookToList(book);
 
-    //clear form fields after entering submit
-    ui.clearFields();
+        //clear form fields after entering submit
+        ui.clearFields();
 
-
-
+    }
 
     e.preventDefault();
 })
