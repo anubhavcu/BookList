@@ -42,6 +42,13 @@ UI.prototype.showAlert = function(message, className) {
     }, 3000)
 }
 
+//delete  book
+UI.prototype.deleteBook = function(target) {
+    if (target.className === 'delete') {
+        target.parentElement.parentElement.remove(); //<a> is within td which is within tr 
+    }
+}
+
 //clear fields
 UI.prototype.clearFields = function() {
     document.getElementById('title').value = '';
@@ -50,7 +57,7 @@ UI.prototype.clearFields = function() {
 }
 
 
-//event listeners 
+//event listeners for add Book
 document.getElementById('book-form').addEventListener('submit', function(e) {
     //get form values 
     const title = document.getElementById('title').value;
@@ -78,6 +85,18 @@ document.getElementById('book-form').addEventListener('submit', function(e) {
         ui.clearFields();
 
     }
+
+    e.preventDefault();
+})
+
+//event listener for delete 
+document.getElementById('book-list').addEventListener('click', function(e) {
+    //instantiate ui  object  
+    const ui = new UI();
+    ui.deleteBook(e.target);
+
+    //show message 
+    ui.showAlert('book removed successfully!!', 'success');
 
     e.preventDefault();
 })
